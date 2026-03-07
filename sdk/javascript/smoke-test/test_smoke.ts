@@ -12,9 +12,8 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { ConnectorClient } from "hyperswitch-payments";
+import { PaymentClient, payments, configs } from "hyperswitch-payments";
 // @ts-ignore - protobuf generated files might not have types yet
-import { ucs } from "hyperswitch-payments/dist/src/payments/generated/proto";
 
 const {
   PaymentServiceAuthorizeRequest,
@@ -23,10 +22,10 @@ const {
   CaptureMethod,
   AuthenticationType,
   Connector,
-  FfiOptions,
-  EnvOptions,
   PaymentAddress,
-} = ucs.v2;
+} = payments;
+
+const { FfiOptions, EnvOptions } = configs;
 
 // Test card configurations
 const TEST_CARDS: Record<string, any> = {
@@ -178,9 +177,9 @@ async function testConnector(
     const req = buildAuthorizeRequest();
     const metadata = buildMetadata(connectorName, authConfig);
 
-    // Test 1: Low-level FFI via ConnectorClient internals
+    // Test 1: Low-level FFI via PaymentClient internals
     // We use the client to build the request
-    const client = new ConnectorClient();
+    const client = new PaymentClient();
     const ffiOptions = FfiOptions.create({ env: EnvOptions.create({ testMode: true }) });
 
     // For now, we'll just verify the request building works

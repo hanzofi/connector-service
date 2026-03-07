@@ -12,18 +12,17 @@
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import payments.ConnectorClient
-import payments.authorize
+import payments.PaymentClient
 import uniffi.connector_service_ffi.UniffiException
 import uniffi.connector_service_ffi.authorizeReqTransformer
-import ucs.v2.Payment.PaymentServiceAuthorizeRequest
-import ucs.v2.Payment.PaymentAddress
-import ucs.v2.Payment.Currency
-import ucs.v2.Payment.CaptureMethod
-import ucs.v2.Payment.AuthenticationType
-import ucs.v2.SdkOptions.FfiConnectorHttpRequest
-import ucs.v2.SdkOptions.FfiOptions
-import ucs.v2.SdkOptions.EnvOptions
+import payments.PaymentServiceAuthorizeRequest
+import payments.PaymentAddress
+import payments.Currency
+import payments.CaptureMethod
+import payments.AuthenticationType
+import payments.FfiConnectorHttpRequest
+import payments.FfiOptions
+import payments.EnvOptions
 import java.io.File
 
 // Test card configurations
@@ -192,7 +191,7 @@ fun testConnector(
             )
         }
         
-        val client = ConnectorClient()
+        val client = PaymentClient()
         val ffiOptions = FfiOptions.newBuilder()
             .setEnv(EnvOptions.newBuilder().setTestMode(true).build())
             .build()

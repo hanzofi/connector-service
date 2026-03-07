@@ -26,9 +26,10 @@ from typing import Dict, List, Any, Optional
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 try:
-    from payments import ConnectorClient
-    from payments.generated.connector_service_ffi import authorize_req_transformer
-    from payments.generated.payment_pb2 import (
+    from payments import (
+        authorize_req_transformer,
+        FfiConnectorHttpRequest,
+        PaymentClient,
         PaymentServiceAuthorizeRequest,
         PaymentAddress,
         USD,
@@ -36,7 +37,6 @@ try:
         NO_THREE_DS,
         PaymentServiceAuthorizeResponse,
     )
-    from payments.generated.sdk_options_pb2 import FfiConnectorHttpRequest
 except ImportError as e:
     print(f"Error importing payments package: {e}")
     print("Make sure the wheel is installed: pip install dist/hyperswitch_payments-*.whl")
@@ -210,7 +210,7 @@ def test_connector_ffi(
             result["round_trip_test"] = {"skipped": True, "reason": "placeholder_credentials"}
             return result
         
-        client = ConnectorClient()
+        client = PaymentClient()
         try:
             response = client.authorize(req, metadata)
             result["round_trip_test"] = {
